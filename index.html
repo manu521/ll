@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosso Site de Namoro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #a6e1ff 0%, #3f87d6 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            transform: rotate(45deg);
+            opacity: 0.7;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(45deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(45deg);
+            }
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 100, 0.2);
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #3f87d6;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        .password-section {
+            margin: 30px 0;
+        }
+        
+        input {
+            padding: 12px 20px;
+            border: 2px solid #3f87d6;
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+            margin: 10px 0;
+            width: 200px;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+        
+        button {
+            background: #3f87d6;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #ff6b6b;
+            transform: scale(1.05);
+        }
+        
+        .error {
+            color: #ff6b6b;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .content {
+            display: none;
+        }
+        
+        .polaroid-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .polaroid {
+            background: white;
+            padding: 15px 15px 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transform: rotate(3deg);
+            transition: all 0.3s;
+            width: 220px;
+        }
+        
+        .polaroid:nth-child(even) {
+            transform: rotate(-2deg);
+        }
+        
+        .polaroid:hover {
+            transform: rotate(0) scale(1.05);
+        }
+        
+        .polaroid img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        
+        .polaroid p {
+            margin-top: 15px;
+            color: #333;
+            font-style: italic;
+        }
+        
+        .message {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            line-height: 1.6;
+            color: #3f5070;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            color: #3f87d6;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <div class="password-section" id="password-section">
+            <h1>Primeiro a senha: tempo de namoro</h1>
+            <p>Digite o número 3 para acessar nosso site especial</p>
+            <input type="number" id="password-input" placeholder="Digite a senha">
+            <p class="error" id="error">Senha incorreta! Tente novamente.</p>
+            <button onclick="checkPassword()">Acessar</button>
+        </div>
+        
+        <div class="content" id="content">
+            <h1>Nosso Álbum de Namoro</h1>
+            
+            <div class="polaroid-gallery">
+                <div class="polaroid">
+                    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20fill%3D%22%23a6e1ff%22%20width%3D%22200%22%20height%3D%22200%22%2F%3E%3Ctext%20fill%3D%22%233f87d6%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20x%3D%2250%22%20y%3D%22100%22%3ENossa%20Primeira%20Foto%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Nossa primeira foto">
+                    <p>O dia em que tudo começou. Cada momento ao seu lado é especial!</p>
+                </div>
+                
+                <div class="polaroid">
+                    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20fill%3D%22%23a6e1ff%22%20width%3D%22200%22%20height%3D%22200%22%2F%3E%3Ctext%20fill%3D%22%233f87d6%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20x%3D%2250%22%20y%3D%22100%22%3EPasseio%20no%20Parque%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Passeio no parque">
+                    <p>Aquele passeio inesquecível no parque. Seu sorriso ilumina meus dias!</p>
+                </div>
+                
+                <div class="polaroid">
+                    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20fill%3D%22%23a6e1ff%22%20width%3D%22200%22%20height%3D%22200%22%2F%3E%3Ctext%20fill%3D%22%233f87d6%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20x%3D%2250%22%20y%3D%22100%22%3EJantar%20Romântico%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Jantar romântico">
+                    <p>O jantar especial que preparei para você. Te amo mais a cada dia!</p>
+                </div>
+            </div>
+            
+            <div class="message">
+                <h2>Para o Amor da Minha Vida</h2>
+                <p>Cada momento ao seu lado é um novo capítulo na história mais bonita que já vivi. Obrigado por ser essa pessoa incrível que ilumina meus dias e aquece meu coração. Que nossa história continue sendo repleta de amor, risadas e momentos inesquecíveis!</p>
+            </div>
+            
+            <div class="footer">
+                <p>Feito com ❤️ especialmente para você</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Criar corações flutuantes
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const numberOfHearts = 30;
+            
+            for (let i = 0; i < numberOfHearts; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                
+                // Posição e tamanho aleatórios
+                const size = Math.random() * 15 + 5;
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const delay = Math.random() * 5;
+                
+                heart.style.width = `${size}px`;
+                heart.style.height = `${size}px`;
+                heart.style.left = `${left}vw`;
+                heart.style.top = `${top}vh`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // Verificar senha
+        function checkPassword() {
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error');
+            const passwordSection = document.getElementById('password-section');
+            const content = document.getElementById('content');
+            
+            if (passwordInput.value === '3') {
+                passwordSection.style.display = 'none';
+                content.style.display = 'block';
+            } else {
+                errorMessage.style.display = 'block';
+                passwordInput.style.borderColor = '#ff6b6b';
+                
+                // Efeito de vibração no input
+                passwordInput.classList.add('shake');
+                setTimeout(() => {
+                    passwordInput.classList.remove('shake');
+                }, 500);
+            }
+        }
+        
+        // Permitir pressionar Enter para enviar a senha
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // Inicializar corações quando a página carregar
+        window.onload = createHearts;
+    </script>
+</body>
+</html>
