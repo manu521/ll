@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Site de Namoro</title>
+    <title>Para Augusto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #a6e1ff 0%, #3f87d6 100%);
+            background: linear-gradient(135deg, #d0e7ff 0%, #a0c8f0 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -22,7 +24,7 @@
             overflow-x: hidden;
             padding: 20px;
         }
-        
+
         .hearts {
             position: fixed;
             top: 0;
@@ -32,201 +34,911 @@
             pointer-events: none;
             z-index: -1;
         }
-        
+
         .heart {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #ff6b6b;
-            transform: rotate(45deg);
+            width: 24px;
+            height: 24px;
             opacity: 0.7;
             animation: float 6s infinite ease-in-out;
+            filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.5));
         }
-        
-        .heart:before, .heart:after {
-            content: '';
-            width: 20px;
-            height: 20px;
-            background: #ff6b6b;
-            border-radius: 50%;
-            position: absolute;
+
+        .heart svg {
+            width: 100%;
+            height: 100%;
+            fill: #3b82f6;
         }
-        
-        .heart:before {
-            top: -10px;
-            left: 0;
-        }
-        
-        .heart:after {
-            top: 0;
-            left: -10px;
-        }
-        
+
         @keyframes float {
-            0%, 100% {
-                transform: translateY(0) rotate(45deg);
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
             }
+
             50% {
-                transform: translateY(-20px) rotate(45deg);
+                transform: translateY(-20px) rotate(10deg);
             }
         }
-        
+
         .container {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 100, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 100, 0.15);
             padding: 30px;
             width: 90%;
-            max-width: 800px;
+            max-width: 500px;
             text-align: center;
         }
-        
-        h1 {
-            color: #3f87d6;
-            margin-bottom: 20px;
-            font-size: 2.2rem;
+
+        .header {
+            margin-bottom: 30px;
         }
-        
-        .password-section {
+
+        h1 {
+            color: #2563eb;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #3b82f6;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .quiz-intro-section {
             margin: 30px 0;
         }
-        
-        input {
-            padding: 12px 20px;
-            border: 2px solid #3f87d6;
+
+        .quiz-intro-title {
+            color: #ef4444;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .quiz-intro-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .quiz-intro-option {
+            background: white;
+            padding: 18px 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .quiz-intro-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: #3b82f6;
+        }
+
+        .quiz-intro-option.selected {
+            background: #3b82f6;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .quiz-intro-submit {
+            background: linear-gradient(to right, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 16px 40px;
             border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .quiz-intro-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .blocked-message {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: #fee2e2;
+            border-radius: 12px;
+            color: #dc2626;
+            font-weight: 500;
+            border-left: 5px solid #ef4444;
+        }
+
+        .password-section {
+            margin: 30px 0;
+            display: none;
+        }
+
+        .input-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        input {
+            padding: 16px 20px;
+            border: 2px solid #3b82f6;
+            border-radius: 12px;
             font-size: 16px;
             outline: none;
             text-align: center;
-            margin: 10px 0;
-            width: 200px;
+            width: 100%;
+            max-width: 300px;
             transition: all 0.3s;
+            background: #f0f7ff;
         }
-        
+
         input:focus {
-            border-color: #ff6b6b;
-            box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+            border-color: #2563eb;
+            box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
         }
-        
-        button {
-            background: #3f87d6;
+
+        .password-button {
+            background: linear-gradient(to right, #3b82f6, #2563eb);
             color: white;
             border: none;
-            padding: 12px 30px;
+            padding: 16px 40px;
             border-radius: 50px;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
             transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
         }
-        
-        button:hover {
-            background: #ff6b6b;
-            transform: scale(1.05);
+
+        .password-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
         }
-        
+
+        .password-button i {
+            margin-left: 8px;
+        }
+
         .error {
-            color: #ff6b6b;
-            margin-top: 10px;
-            font-weight: bold;
+            color: #ef4444;
+            margin-top: 15px;
+            font-weight: 500;
             display: none;
         }
-        
+
+        .start-section {
+            display: none;
+            margin: 30px 0;
+            animation: fadeIn 1s;
+        }
+
+        .start-question {
+            color: #2563eb;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .start-button {
+            background: linear-gradient(to right, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20 rgba(16, 185, 129, 0.4);
+        }
+
+        .start-button i {
+            margin-left: 10px;
+        }
+
         .content {
             display: none;
         }
-        
-        .polaroid-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
+
+        .welcome-message {
+            background: #f0f7ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            line-height: 1.6;
+            color: #1e3a8a;
+            text-align: center;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .welcome-message h2 {
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
+        .roulette-section {
             margin: 40px 0;
+            text-align: center;
         }
-        
-        .polaroid {
-            background: white;
-            padding: 15px 15px 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transform: rotate(3deg);
-            transition: all 0.3s;
-            width: 220px;
+
+        .roulette-title {
+            color: #2563eb;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
-        
-        .polaroid:nth-child(even) {
-            transform: rotate(-2deg);
+
+        .roulette-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
         }
-        
-        .polaroid:hover {
-            transform: rotate(0) scale(1.05);
-        }
-        
-        .polaroid img {
+
+        .roulette-wheel {
             width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border: 1px solid #eee;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#a0c8f0 0deg 60deg,
+                    #87b5e6 60deg 120deg,
+                    #6ea3dc 120deg 180deg,
+                    #5590d2 180deg 240deg,
+                    #3b82f6 240deg 300deg,
+                    #2563eb 300deg 360deg);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+            transition: transform 3s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            transform: rotate(0deg);
         }
-        
-        .polaroid p {
-            margin-top: 15px;
-            color: #333;
+
+        .roulette-item {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom left;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .roulette-item span {
+            transform: rotate(90deg);
+            color: white;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            font-size: 0.85rem;
+            width: 90px;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .roulette-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            z-index: 10;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            border: 4px solid #d0e7ff;
+        }
+
+        .roulette-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 40px;
+            background: #ef4444;
+            clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+            z-index: 20;
+        }
+
+        .spin-button {
+            background: linear-gradient(to right, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .spin-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .spin-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #2563eb;
+            font-weight: 600;
+            min-height: 30px;
+            background: #f0f7ff;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .timer-section {
+            background: #f0f7ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .timer-section h2 {
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 80px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .time-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .time-label {
+            font-size: 0.9rem;
+            color: #3b82f6;
+            margin-top: 5px;
+        }
+
+        .start-date {
+            margin-top: 20px;
+            color: #3b82f6;
             font-style: italic;
         }
-        
-        .message {
-            background: #f8f9ff;
+
+        .quiz-section {
+            background: #f0f7ff;
             border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            line-height: 1.6;
-            color: #3f5070;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+            border-left: 5px solid #3b82f6;
         }
-        
+
+        .quiz-title {
+            color: #2563eb;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .quiz-question {
+            color: #1e40af;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .quiz-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-option input {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .quiz-option label {
+            font-size: 1.1rem;
+            color: #1e40af;
+            cursor: pointer;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .quiz-submit {
+            background: linear-gradient(to right, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .quiz-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .quiz-result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #2563eb;
+            font-weight: 600;
+            min-height: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .present-hunt-section {
+            background: #fef3c7;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: center;
+            border-left: 5px solid #f59e0b;
+        }
+
+        .present-hunt-title {
+            color: #d97706;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .present-hunt-clues {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .present-hunt-clue {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            font-size: 1.1rem;
+            color: #92400e;
+            font-weight: 500;
+        }
+
+        .present-hunt-input {
+            margin: 20px 0;
+        }
+
+        .present-hunt-input input {
+            padding: 16px 20px;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.3s;
+            background: #fffbeb;
+        }
+
+        .present-hunt-input input:focus {
+            border-color: #d97706;
+            box-shadow: 0 0 10px rgba(217, 119, 6, 0.3);
+        }
+
+        .present-hunt-submit {
+            background: linear-gradient(to right, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .present-hunt-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .present-hunt-result {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #d97706;
+            font-weight: 600;
+            min-height: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .message {
+            background: #f0f7ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            line-height: 1.6;
+            color: #1e3a8a;
+            text-align: center;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .message h2 {
+            color: #2563eb;
+            margin-bottom: 15px;
+        }
+
         .footer {
             margin-top: 30px;
-            color: #3f87d6;
-            font-size: 0.9rem;
+            color: #3b82f6;
+            font-size: 1rem;
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            75% {
+                transform: translateX(5px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .roulette-container {
+                width: 280px;
+                height: 280px;
+            }
+
+            .roulette-item span {
+                font-size: 0.8rem;
+                width: 85px;
+            }
+
+            .timer {
+                gap: 10px;
+            }
+
+            .time-unit {
+                min-width: 70px;
+                padding: 12px;
+            }
+
+            .time-value {
+                font-size: 1.7rem;
+            }
+
+            .start-question {
+                font-size: 1.3rem;
+            }
+
+            .start-button {
+                padding: 16px 40px;
+                font-size: 18px;
+            }
+
+            .quiz-title {
+                font-size: 1.6rem;
+            }
+
+            .quiz-question {
+                font-size: 1.1rem;
+            }
+
+            .quiz-intro-title {
+                font-size: 1.6rem;
+            }
+
+            .quiz-intro-option {
+                padding: 15px 20px;
+            }
+
+            .present-hunt-title {
+                font-size: 1.6rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="hearts" id="hearts"></div>
-    
+
     <div class="container">
-        <div class="password-section" id="password-section">
-            <h1>Primeiro a senha: tempo de namoro</h1>
-            <p>Digite o número 3 para acessar nosso site especial</p>
-            <input type="number" id="password-input" placeholder="Digite a senha">
-            <p class="error" id="error">Senha incorreta! Tente novamente.</p>
-            <button onclick="checkPassword()">Acessar</button>
-        </div>
-        
-        <div class="content" id="content">
-            <h1>Nosso Álbum de Namoro</h1>
-            
-            <div class="polaroid-gallery">
-                <div class="polaroid">
-                    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20fill%3D%22%23a6e1ff%22%20width%3D%22200%22%20height%3D%22200%22%2F%3E%3Ctext%20fill%3D%22%233f87d6%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20x%3D%2250%22%20y%3D%22100%22%3ENossa%20Primeira%20Foto%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Nossa primeira foto">
-                    <p>O dia em que tudo começou. Cada momento ao seu lado é especial!</p>
-                </div>
-                
-                <div class="polaroid">
-                    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20fill%3D%22%23a6e1ff%22%20width%3D%22200%22%20height%3D%22200%22%2F%3E%3Ctext%20fill%3D%22%233f87d6%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20x%3D%2250%22%20y%3D%22100%22%3EPasseio%20no%20Parque%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Passeio no parque">
-                    <p>Aquele passeio inesquecível no parque. Seu sorriso ilumina meus dias!</p>
-                </div>
-                
-                <div class="polaroid">
-                    <img src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%22200%22%20viewBox%3D%220%200%20200%20200%22%3E%3Crect%20fill%3D%22%23a6e1ff%22%20width%3D%22200%22%20height%3D%22200%22%2F%3E%3Ctext%20fill%3D%22%233f87d6%22%20font-family%3D%22Arial%22%20font-size%3D%2220%22%20x%3D%2250%22%20y%3D%22100%22%3EJantar%20Romântico%3C%2Ftext%3E%3C%2Fsvg%3E" alt="Jantar romântico">
-                    <p>O jantar especial que preparei para você. Te amo mais a cada dia!</p>
-                </div>
+        <div class="quiz-intro-section" id="quiz-intro-section">
+            <div class="header">
+                <h1>Para Augusto</h1>
+                <p class="subtitle">Algo especial está esperando...</p>
             </div>
-            
+
+            <h2 class="quiz-intro-title">Cuidado com a Resposta</h2>
+
+            <div class="quiz-intro-options">
+                <div class="quiz-intro-option" data-value="quero-muito-ver">Quero muito ver</div>
+                <div class="quiz-intro-option" data-value="bora-ne">Bora né</div>
+                <div class="quiz-intro-option" data-value="nao-quero-ver">Não quero ver</div>
+            </div>
+
+            <button class="quiz-intro-submit" id="quiz-intro-submit">Confirmar</button>
+
+            <div class="blocked-message" id="blocked-message">
+                <p>Ops! Parece que você não está tão animado assim... 😔</p>
+                <p>Volte quando estiver mais preparado para surpresas!</p>
+            </div>
+        </div>
+
+        <div class="password-section" id="password-section">
+            <div class="header">
+                <h1>Para Augusto</h1>
+                <p class="subtitle">Algo especial está esperando...</p>
+            </div>
+
+            <div class="input-container">
+                <input type="number" id="password-input" placeholder="Digite a senha (3)">
+            </div>
+
+            <p class="error" id="error">Senha incorreta! Tente novamente.</p>
+
+            <button class="password-button" onclick="checkPassword()">Acessar <i class="fas fa-lock-open"></i></button>
+        </div>
+
+        <div class="start-section" id="start-section">
+            <p class="start-question">Vamos começar?</p>
+            <button class="start-button" onclick="startExperience()">Começar <i class="fas fa-heart"></i></button>
+        </div>
+
+        <div class="content" id="content">
+            <h1>Nosso Site Especial</h1>
+
+            <div class="welcome-message">
+                <h2>Bem-vindo ao nosso cantinho especial!</h2>
+                <p>Aqui guardamos todas as nossas lembranças e planos para o futuro. Cada momento ao seu lado é único e especial, e eu quis criar este site para celebrar nossa história.</p>
+            </div>
+
+            <div class="roulette-section">
+                <h2 class="roulette-title">Roleta Premiada</h2>
+                <div class="roulette-container">
+                    <div class="roulette-wheel" id="roulette-wheel">
+                        <div class="roulette-item" style="transform: rotate(0deg)">
+                            <span>Túnel</span>
+                        </div>
+                        <div class="roulette-item" style="transform: rotate(60deg)">
+                            <span>Carinho</span>
+                        </div>
+                        <div class="roulette-item" style="transform: rotate(120deg)">
+                            <span>Lanche</span>
+                        </div>
+                        <div class="roulette-item" style="transform: rotate(180deg)">
+                            <span>Seu Túnel</span>
+                        </div>
+                        <div class="roulette-item" style="transform: rotate(240deg)">
+                            <span>Ela em Cima Sozinha</span>
+                        </div>
+                        <div class="roulette-item" style="transform: rotate(300deg)">
+                            <span>Presente Misterioso</span>
+                        </div>
+                    </div>
+                    <div class="roulette-center"></div>
+                    <div class="roulette-pointer"></div>
+                </div>
+                <button class="spin-button" id="spin-button">Girar</button>
+                <div class="result" id="result"></div>
+            </div>
+
+            <div class="timer-section">
+                <h2>Nosso Tempo Juntos</h2>
+                <div class="timer">
+                    <div class="time-unit">
+                        <div class="time-value" id="years">0</div>
+                        <div class="time-label">Anos</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="months">0</div>
+                        <div class="time-label">Meses</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="days">0</div>
+                        <div class="time-label">Dias</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="hours">0</div>
+                        <div class="time-label">Horas</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="minutes">0</div>
+                        <div class="time-label">Minutos</div>
+                    </div>
+                    <div class="time-unit">
+                        <div class="time-value" id="seconds">0</div>
+                        <div class="time-label">Segundos</div>
+                    </div>
+                </div>
+                <p class="start-date">Desde 09 de Agosto de 2022</p>
+            </div>
+
+            <div class="quiz-section">
+                <h2 class="quiz-title">Quiz do Nosso Futuro</h2>
+                <p class="quiz-question">O que você quer fazer comigo? (pode marcar quantas quiser!)</p>
+
+                <div class="quiz-options">
+                    <div class="quiz-option">
+                        <input type="checkbox" id="option1" name="future-plans" value="casar">
+                        <label for="option1">Casar</label>
+                    </div>
+                    <div class="quiz-option">
+                        <input type="checkbox" id="option2" name="future-plans" value="viajar">
+                        <label for="option2">Viajar</label>
+                    </div>
+                    <div class="quiz-option">
+                        <input type="checkbox" id="option3" name="future-plans" value="morar-juntos">
+                        <label for="option3">Morar Juntos</label>
+                    </div>
+                    <div class="quiz-option">
+                        <input type="checkbox" id="option4" name="future-plans" value="terminar">
+                        <label for="option4">Terminar</label>
+                    </div>
+                    <div class="quiz-option">
+                        <input type="checkbox" id="option5" name="future-plans" value="viver-grudado">
+                        <label for="option5">Viver Grudado</label>
+                    </div>
+                    <div class="quiz-option">
+                        <input type="checkbox" id="option6" name="future-plans" value="desgrudar">
+                        <label for="option6">Desgrudar</label>
+                    </div>
+                    <div class="quiz-option">
+                        <input type="checkbox" id="option7" name="future-plans" value="gogozo-sempre">
+                        <label for="option7">Gogozo Sempre</label>
+                    </div>
+                </div>
+
+                <button class="quiz-submit" id="quiz-submit">Enviar Respostas</button>
+                <div class="quiz-result" id="quiz-result"></div>
+            </div>
+
+            <div class="present-hunt-section">
+                <h2 class="present-hunt-title">Cadê meu presente?</h2>
+
+                <div class="present-hunt-clues">
+                    <div class="present-hunt-clue">Dica 1: Chão</div>
+                    <div class="present-hunt-clue">Dica 2: Escuro</div>
+                    <div class="present-hunt-clue">Dica 3: Estamos em cima</div>
+                </div>
+
+                <div class="present-hunt-input">
+                    <input type="text" id="present-location" placeholder="Onde está o presente?">
+                </div>
+
+                <button class="present-hunt-submit" id="present-hunt-submit">Verificar Resposta</button>
+
+                <div class="present-hunt-result" id="present-hunt-result"></div>
+            </div>
+
             <div class="message">
-                <h2>Para o Amor da Minha Vida</h2>
+                <h2>Para Augusto, o Amor da Minha Vida</h2>
                 <p>Cada momento ao seu lado é um novo capítulo na história mais bonita que já vivi. Obrigado por ser essa pessoa incrível que ilumina meus dias e aquece meu coração. Que nossa história continue sendo repleta de amor, risadas e momentos inesquecíveis!</p>
             </div>
-            
+
             <div class="footer">
                 <p>Feito com ❤️ especialmente para você</p>
             </div>
@@ -234,46 +946,103 @@
     </div>
 
     <script>
-        // Criar corações flutuantes
+        // Criar corações flutuantes com formato SVG
         function createHearts() {
             const heartsContainer = document.getElementById('hearts');
-            const numberOfHearts = 30;
-            
+            const numberOfHearts = 20;
+
             for (let i = 0; i < numberOfHearts; i++) {
                 const heart = document.createElement('div');
                 heart.classList.add('heart');
-                
+
                 // Posição e tamanho aleatórios
-                const size = Math.random() * 15 + 5;
+                const size = Math.random() * 20 + 10;
                 const left = Math.random() * 100;
                 const top = Math.random() * 100;
                 const delay = Math.random() * 5;
-                
+
                 heart.style.width = `${size}px`;
                 heart.style.height = `${size}px`;
                 heart.style.left = `${left}vw`;
                 heart.style.top = `${top}vh`;
                 heart.style.animationDelay = `${delay}s`;
                 heart.style.opacity = Math.random() * 0.5 + 0.3;
-                
+
+                // Adicionar SVG de coração
+                heart.innerHTML = `
+                    <svg viewBox="0 0 512 512">
+                        <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z"/>
+                    </svg>
+                `;
+
                 heartsContainer.appendChild(heart);
             }
         }
-        
+
+        // Configurar o quiz inicial
+        function setupIntroQuiz() {
+            const quizOptions = document.querySelectorAll('.quiz-intro-option');
+            const quizSubmit = document.getElementById('quiz-intro-submit');
+            const blockedMessage = document.getElementById('blocked-message');
+            const quizIntroSection = document.getElementById('quiz-intro-section');
+            const passwordSection = document.getElementById('password-section');
+
+            let selectedOption = null;
+
+            // Adicionar evento de clique para cada opção
+            quizOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    // Remover seleção anterior
+                    quizOptions.forEach(opt => opt.classList.remove('selected'));
+
+                    // Selecionar nova opção
+                    option.classList.add('selected');
+                    selectedOption = option.getAttribute('data-value');
+                });
+            });
+
+            // Adicionar evento de clique para o botão de enviar
+            quizSubmit.addEventListener('click', () => {
+                if (!selectedOption) {
+                    alert('Por favor, selecione uma opção!');
+                    return;
+                }
+
+                if (selectedOption === 'quero-muito-ver') {
+                    // Se selecionou "Quero muito ver", mostrar seção de senha
+                    quizIntroSection.style.display = 'none';
+                    passwordSection.style.display = 'block';
+
+                    // Adicionar mais corações
+                    createHearts();
+                    createHearts();
+                } else {
+                    // Se selecionou "Bora né" или "Não quero ver", mostrar mensagem de bloqueio
+                    blockedMessage.style.display = 'block';
+
+                    // Adicionar efeito de shake na seção
+                    quizIntroSection.classList.add('shake');
+                    setTimeout(() => {
+                        quizIntroSection.classList.remove('shake');
+                    }, 500);
+                }
+            });
+        }
+
         // Verificar senha
         function checkPassword() {
             const passwordInput = document.getElementById('password-input');
             const errorMessage = document.getElementById('error');
             const passwordSection = document.getElementById('password-section');
-            const content = document.getElementById('content');
-            
+            const startSection = document.getElementById('start-section');
+
             if (passwordInput.value === '3') {
                 passwordSection.style.display = 'none';
-                content.style.display = 'block';
+                startSection.style.display = 'block';
             } else {
                 errorMessage.style.display = 'block';
-                passwordInput.style.borderColor = '#ff6b6b';
-                
+                passwordInput.style.borderColor = '#ef4444';
+
                 // Efeito de vibração no input
                 passwordInput.classList.add('shake');
                 setTimeout(() => {
@@ -281,16 +1050,248 @@
                 }, 500);
             }
         }
-        
-        // Permitir pressionar Enter para enviar a senha
-        document.getElementById('password-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
+
+        // Iniciar a experiência
+        function startExperience() {
+            const startSection = document.getElementById('start-section');
+            const content = document.getElementById('content');
+
+            startSection.style.display = 'none';
+            content.style.display = 'block';
+
+            // Iniciar o cronômetro
+            startTimer();
+
+            // Adicionar animação de entrada para o conteúdo
+            content.style.animation = "fadeIn 1s";
+        }
+
+        // Configurar a roleta
+        function setupRoulette() {
+            const rouletteWheel = document.getElementById('roulette-wheel');
+            const spinButton = document.getElementById('spin-button');
+            const resultElement = document.getElementById('result');
+
+            const items = [
+                "Túnel",
+                "Carinho",
+                "Lanche",
+                "Seu Túnel",
+                "Ela em Cima Sozinha",
+                "Presente Misterioso"
+            ];
+
+            let isSpinning = false;
+
+            spinButton.addEventListener('click', () => {
+                if (isSpinning) return;
+
+                isSpinning = true;
+                spinButton.disabled = true;
+                resultElement.textContent = "";
+
+                // Gira aleatoriamente entre 3 and 5 voltas completas mais um ângulo aleatório
+                const degrees = 1080 + Math.floor(Math.random() * 360); // 3 voltas completas (1080°) + aleatório
+
+                // Define a rotação da roleta
+                rouletteWheel.style.transform = `rotate(${degrees}deg)`;
+
+                // Calcula o resultado baseado no ângulo final
+                setTimeout(() => {
+                    const actualDegrees = degrees % 360; // Normaliza para um valor entre 0-360
+                    const segmentSize = 360 / items.length;
+                    const winningIndex = Math.floor((360 - actualDegrees) / segmentSize) % items.length;
+
+                    const winner = items[winningIndex];
+
+                    // Mostra o resultado com animação
+                    setTimeout(() => {
+                        resultElement.textContent = `Resultado: ${winner}!`;
+                        isSpinning = false;
+                        spinButton.disabled = false;
+                    }, 500);
+
+                }, 3000); // Tempo igual à duração da transição
+            });
+        }
+
+        // Configurar o quiz
+        function setupQuiz() {
+            const quizSubmit = document.getElementById('quiz-submit');
+            const quizResult = document.getElementById('quiz-result');
+
+            quizSubmit.addEventListener('click', () => {
+                const selectedOptions = [];
+                const checkboxes = document.querySelectorAll('input[name="future-plans"]:checked');
+
+                checkboxes.forEach(checkbox => {
+                    selectedOptions.push(checkbox.value);
+                });
+
+                if (selectedOptions.length === 0) {
+                    quizResult.textContent = "Por favor, selecione pelo menos uma opção!";
+                    quizResult.style.display = "block";
+                    return;
+                }
+
+                // Gerar mensagem personalizada baseada nas seleções
+                let message = "Que legal! Você quer: ";
+
+                selectedOptions.forEach((option, index) => {
+                    switch (option) {
+                        case "casar":
+                            message += "casar comigo";
+                            break;
+                        case "viajar":
+                            message += "viajar comigo";
+                            break;
+                        case "morar-juntos":
+                            message += "morar junto comigo";
+                            break;
+                        case "terminar":
+                            message += "terminar (espero que seja brincadeira!)";
+                            break;
+                        case "viver-grudado":
+                            message += "viver grudado em mim";
+                            break;
+                        case "desgrudar":
+                            message += "desgrudar (também espero que seja brincadeira!)";
+                            break;
+                        case "gogozo-sempre":
+                            message += "gogozo sempre";
+                            break;
+                    }
+
+                    if (index < selectedOptions.length - 2) {
+                        message += ", ";
+                    } else if (index === selectedOptions.length - 2) {
+                        message += " e ";
+                    }
+                });
+
+                message += "! 💙";
+
+                quizResult.textContent = message;
+                quizResult.style.display = "block";
+
+                // Rolar até o resultado
+                quizResult.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Configurar a caça ao presente
+        function setupPresentHunt() {
+            const presentInput = document.getElementById('present-location');
+            const presentSubmit = document.getElementById('present-hunt-submit');
+            const presentResult = document.getElementById('present-hunt-result');
+
+            // Respostas aceitáveis (em minúsculas para comparação)
+            const correctAnswers = [
+                "debaixo da cama",
+                "embaixo da cama",
+                "debaixo da cama",
+                "sob a cama",
+                "cama"
+            ];
+
+            presentSubmit.addEventListener('click', () => {
+                const answer = presentInput.value.trim().toLowerCase();
+
+                if (!answer) {
+                    presentResult.textContent = "Por favor, digite onde você acha que está o presente!";
+                    presentResult.style.display = "block";
+                    return;
+                }
+
+                // Verificar se a resposta está correta
+                let isCorrect = false;
+                for (const correctAnswer of correctAnswers) {
+                    if (answer.includes(correctAnswer)) {
+                        isCorrect = true;
+                        break;
+                    }
+                }
+
+                if (isCorrect) {
+                    presentResult.innerHTML = "Parabéns! 🎉 Você encontrou!<br>O presente está mesmo debaixo da cama!";
+                    presentResult.style.color = "#059669";
+                    presentResult.style.display = "block";
+
+                    // Adicionar corações extras
+                    createHearts();
+                    createHearts();
+                } else {
+                    presentResult.textContent = "Hmm, não é aí... Tente novamente usando as dicas!";
+                    presentResult.style.color = "#dc2626";
+                    presentResult.style.display = "block";
+
+                    // Efeito de shake
+                    presentInput.classList.add('shake');
+                    setTimeout(() => {
+                        presentInput.classList.remove('shake');
+                    }, 500);
+                }
+            });
+
+            // Permitir pressionar Enter para enviar
+            presentInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    presentSubmit.click();
+                }
+            });
+        }
+
+        // Cronômetro do relacionamento
+        function startTimer() {
+            const startDate = new Date('2022-08-09T00:00:00');
+
+            function updateTimer() {
+                const now = new Date();
+                const diff = now - startDate;
+
+                // Calcular anos, meses, dias, horas, minutos e segundos
+                const seconds = Math.floor(diff / 1000) % 60;
+                const minutes = Math.floor(diff / (1000 * 60)) % 60;
+                const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+                // Calcular meses e anos considerando meses com dias variados
+                const startYear = startDate.getFullYear();
+                const startMonth = startDate.getMonth();
+
+                let years = now.getFullYear() - startYear;
+                let months = now.getMonth() - startMonth;
+
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+
+                // Atualizar os valores na interface
+                document.getElementById('years').textContent = years;
+                document.getElementById('months').textContent = months;
+                document.getElementById('days').textContent = days;
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
             }
-        });
-        
-        // Inicializar corações quando a página carregar
-        window.onload = createHearts;
+
+            // Atualizar imediatamente e a cada segundo
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // Inicializar tudo quando a página carregar
+        window.onload = function() {
+            createHearts();
+            setupIntroQuiz();
+            setupRoulette();
+            setupQuiz();
+            setupPresentHunt();
+        };
     </script>
 </body>
+
 </html>
